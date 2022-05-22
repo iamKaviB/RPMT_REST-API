@@ -8,4 +8,4 @@ const studentGroupSchema = new Schema({
   }
 });
 
-module.exports = User = mongoose.model("StudentGroup", studentGroupSchema);
+module.exports = mongoose.model("StudentGroup", studentGroupSchema);

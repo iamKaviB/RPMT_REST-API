@@ -11,4 +11,4 @@ const panelMemberSchema = new Schema({
     },
 });
 
-module.exports = User = mongoose.model("panelMember", panelMemberSchema);
+module.exports =mongoose.model("panelMember", panelMemberSchema);
