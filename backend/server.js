@@ -16,6 +16,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(studentErrorHandler)
 
+app.use(`${baseurl}/auth`, require('./routers/auth/auth.router'))
+
 app.use(`${baseurl}/studentgroups`, require('./routers/student-groups/studentGroups.router'))
 app.use(`${baseurl}/submissiontype`, require('./routers/submission-type/submissionType.router'))
 
