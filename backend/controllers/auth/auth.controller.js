@@ -1,5 +1,10 @@
 const User = require('../../models/users/user.model')
+const Student = require('../../models/users/student/student.model')
+const Staff = require('../../models/users/staff/staff.model')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
+const dotenv = require('dotenv').config()
 
 
 const signup = async  (req, res)=>{
@@ -15,13 +20,37 @@ const signup = async  (req, res)=>{
             password,
         });
 
-        if(role=="STUDENT"){
-            
-        }
+
 
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
-        await user.save();
+         let saveduser = await user.save();
+         let id = saveduser._id.toString()
+
+        if(role==="STUDENT"){
+
+            let {studentId,  batch , group  } = req.body;
+            let student = new Student({
+                id,
+                studentId,
+                group,
+                batch
+            })
+
+            await student.save()
+            res.status(200).send("Student has been save Successfully");
+        }
+
+        if(role==="STAFF"){
+            let userId = id
+
+            let staff = new Staff({
+                userId,
+            })
+
+            await staff.save()
+            res.status(200).send("Staff member has been save Successfully");
+        }
 
         res.status(200).send("User has been save Successfully");
     } catch (error) {
@@ -29,6 +58,32 @@ const signup = async  (req, res)=>{
     }
 }
 
+const signin = async ( req, res)=>{
+
+    try {
+        let user = await User.findOne({ email: req.body.email });
+
+
+        if (!user) {
+            return res.status(400).send("Invalid email or password");
+        } else {
+            const isValidPassword = await bcrypt.compare(
+                req.body.password,
+                user.password,
+            );
+            if (!isValidPassword) {
+                return res.status(400).send("Invalid email or password");
+            }
+
+            console.log(user, process.env.JWT_SECRET)
+            const token = jwt.sign({ _id: user._id , role : user.role}, process.env.JWT_SECRET, { expiresIn: '1800s' });
+            console.log('ji')
+            return res.status(200).send(token);
+        }
+    } catch (err) {}
+
+}
+
 module.exports={
-    signup
+    signup ,signin
 }
