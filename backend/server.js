@@ -20,5 +20,6 @@ app.use(`${baseurl}/auth`, require('./routers/auth/auth.router'))
 
 app.use(`${baseurl}/studentgroups`, require('./routers/student-groups/studentGroups.router'))
 app.use(`${baseurl}/submissiontype`, require('./routers/submission-type/submissionType.router'))
+app.use(`${baseurl}/template`, require('./routers/template/template.router'))
 
 app.listen(port, ()=>{console.log(`server start on port ${port} base url `)})
