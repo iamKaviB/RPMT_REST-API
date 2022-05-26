@@ -1,5 +1,6 @@
 
 const StudentGroup = require('../../models/student-groups/studentGroup.model')
+const ObjectID = require('mongodb').ObjectID
 
 const getStdGroups =async (req, res)=>{
 
@@ -35,6 +36,65 @@ const createStdGroups = async (req, res)=>{
 res.status(200).json(group)
 }
 
+const allocatePanelMember  =async  (req,res)=>{
+
+    try {
+
+        let group = await StudentGroup.findOne({_id:req.body.id})
+        console.log("here")
+        console.log(req.body.panelArr)
+        let updated =await StudentGroup.updateOne({ _id: ObjectID(req.body.id) },
+            { $set:{panelMembersId: req.body.panelArr}
+            })
+        console.log(updated)
+        res.status(200).json(updated)
+
+    } catch (err){
+
+    }
+
+}
+
+const allocateSupervisor  =async  (req,res)=>{
+
+    try {
+
+        let group = await StudentGroup.findOne({_id:req.body.id})
+        let updated =await StudentGroup.updateOne({ _id: ObjectID(req.body.id) },
+            { $set:{supervisorId: req.body.supervisorId, supervisorStatus : true}
+            })
+        console.log(updated)
+        res.status(200).json(updated)
+
+    } catch (err){
+
+    }
+
+}
+
+const allocateCoSupervisor  =async  (req,res)=>{
+
+    try {
+
+        let group = await StudentGroup.findOne({_id:req.body.id})
+        if(group.supervisorStatus===false){
+            res.status(403).json({message: " you cant add co-supervisor without supervisor"})
+        }else if(group.supervisorId === req.body.cosupervisorId){
+            res.status(403).json({message: " supervisor cannot be the co supervisor in same group"})
+        } else {
+            let updated = await StudentGroup.updateOne({_id: ObjectID(req.body.id)},
+                {
+                    $set: {cosupervisorId: req.body.cosupervisorId, cosupervisorStatus: true}
+                })
+            console.log(updated)
+            res.status(200).json(updated)
+        }
+    } catch (err){
+
+    }
+
+}
+
 module.exports={
-    getStdGroups,createStdGroups
+    getStdGroups,createStdGroups ,allocatePanelMember,allocateSupervisor,allocateCoSupervisor
 }

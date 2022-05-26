@@ -24,18 +24,22 @@ const studentGroupSchema = new Schema({
   },
   supervisorId: {
     type: String,
+    default: ""
   },
   cosuperviserId: {
     type: String,
+    default: ""
   },
   panelMembersId: {
     type: [],
   },
   supervisorStatus: {
     type: Boolean,
+    default: false
   },
   cosupervisorStatus: {
     type: Boolean,
+    default: false
   },
 });
 
