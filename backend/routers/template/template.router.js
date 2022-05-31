@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const { uploadTemplate} = require('../../controllers/template/template.controller')
+const { upload, uploadTemplate} = require('../../controllers/template/template.controller')
 
-router.get('/upload',uploadTemplate)
+router.post('/upload',upload.single("file"),uploadTemplate)
 
 
 module.exports =router
