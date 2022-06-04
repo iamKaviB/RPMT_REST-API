@@ -45,7 +45,7 @@ const createStdGroups = async (req, res)=>{
 
     console.log(group)
 
-
+//show success alert
 res.status(200).json({message:"created"})
 }
 
@@ -99,7 +99,7 @@ const allocateCoSupervisor  =async  (req,res)=>{
                 {
                     $set: {cosupervisorId: req.body.cosupervisorId, cosupervisorStatus: true}
                 })
-            res.status(200).json({message:"created"})
+            res.status(200).json({message:"created"})//show success alert
         }
     } catch (err){
 
