@@ -1,27 +1,34 @@
-const Template = require("../../models/template/template.model")
-
-const multer = require('multer')
-const path = require('path')
-
-const storage  = multer.diskStorage({
-    destination : (req, file , cb)=>{
-        console.log("hi2")
-        cb(null, 'utils/Storage')
-    },
-    filename : (req, file , cb)=>{
-        console.log("hi1")
-        cb(null, Date.now()+ path.extname(file.originalname))
-    }
-
-})
-
-const upload = multer({storage:storage})
-const uploadTemplate = async (req , res)=>{
-    console.log("hi3")
-    res.status(200).send({message:"upload"})
-}
-
-
-module.exports={
-    upload, uploadTemplate
-}
+// const Template = require("../../models/template/template.model")
+// const firebase = require("firebase/compat");
+//
+//
+// let firebaseConfig = {
+//      apiKey: 'AIzaSyAgRmlKdJGE6Rl4-Tyz2bEPbCt8TArLzmQ',
+//      authDomain: 'af-project-4e8f8.firebaseapp.com',
+//      storageBucket: 'af-project-4e8f8.appspot.com'
+// };
+// firebase.initializeApp(firebaseConfig);
+// let storage = firebase.storage();
+//
+//
+//
+// const uploadTemplate = async (req , res)=>{
+//
+//
+//      let metadata = {
+//           contentType: req.file.mimetype
+//      };
+//      let uploadTask = storageRef.child('documents/' + req.file.originalname).put(req.file.buffer, metadata)
+//      uploadTask.then((res)=>{
+//          console.log(res)
+//      }).catch((err)=>{
+//          console.error(err)
+//      })
+//
+//
+// }
+//
+//
+// module.exports={
+//      uploadTemplate
+// }

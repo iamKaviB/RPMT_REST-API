@@ -1,5 +1,6 @@
 
 const StudentGroup = require('../../models/student-groups/studentGroup.model')
+const Student = require('../../models/users/student/student.model')
 const ObjectID = require('mongodb').ObjectID
 
 const getStdGroups =async (req, res)=>{
@@ -26,14 +27,26 @@ const createStdGroups = async (req, res)=>{
         throw new Error('please Enter the member 04 IT number')
     }
 
-    const group =StudentGroup.create({
+    const group = await StudentGroup.create({
         topic:req.body.topic,
         member1Id:req.body.member1Id,
         member2Id:req.body.member2Id,
         member3Id:req.body.member3Id,
         member4Id:req.body.member4Id,
     })
-res.status(200).json(group)
+
+    let student1 =await Student.findOne({studentId : req.body.member1Id})
+    let student2 =await Student.findOne({studentId : req.body.member2Id})
+    let student3 =await Student.findOne({studentId : req.body.member3Id})
+    let student4 =await Student.findOne({studentId : req.body.member4Id})
+
+    await Student.updateOne({ _id: ObjectID(student1._id )},
+        { $set:{groupId: group._id}})
+
+    console.log(group)
+
+
+res.status(200).json({message:"created"})
 }
 
 const allocatePanelMember  =async  (req,res)=>{
@@ -86,8 +99,7 @@ const allocateCoSupervisor  =async  (req,res)=>{
                 {
                     $set: {cosupervisorId: req.body.cosupervisorId, cosupervisorStatus: true}
                 })
-            console.log(updated)
-            res.status(200).json(updated)
+            res.status(200).json({message:"created"})
         }
     } catch (err){
 
@@ -95,6 +107,18 @@ const allocateCoSupervisor  =async  (req,res)=>{
 
 }
 
+const findById =async (req,res)=>{
+
+
+    if(req.body.groupId!=="undefined") {
+        let group = await StudentGroup.findOne({_id: req.body.groupId})
+        res.status(200).send(group)
+    }else{
+        res.status(200).send(null)
+    }
+
+}
+
 module.exports={
-    getStdGroups,createStdGroups ,allocatePanelMember,allocateSupervisor,allocateCoSupervisor
+    getStdGroups,createStdGroups ,allocatePanelMember,allocateSupervisor,allocateCoSupervisor, findById
 }

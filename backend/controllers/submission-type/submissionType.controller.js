@@ -15,7 +15,11 @@ const createSubmissionType = async (req, res)=>{
     // }
 
     const submissionType =SubmissionType.create({
+        name:req.body.type,
+        description:req.body.description,
+        deadDate:req.body.date,
         type:req.body.type
+
     })
     res.status(200).json(submissionType)
 }

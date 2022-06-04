@@ -4,9 +4,12 @@ const {getStdGroups,
     createStdGroups,
     allocatePanelMember ,
     allocateSupervisor,
+    findById,
     allocateCoSupervisor} = require('../../controllers/student-groups/studentGroups.controller')
 
 router.get('/all', getStdGroups)
+
+router.post('/byId', findById)
 
 router.post('/create', createStdGroups)
 

@@ -10,7 +10,8 @@ const studentSchema = new Schema({
         required: true,
     },
     groupId: {
-        type: String
+        type: String,
+        default :""
     },
     batch: {
         type: String,
